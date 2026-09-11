@@ -2,7 +2,8 @@ require "rosegold"
 
 # Stays connected and eats when hungry
 
-SERVER_HOST   = ENV.fetch "SERVER_HOST", "play.civmc.net"
+SERVER_HOST   = ENV.fetch "SERVER_HOST", "localhost"
+SERVER_PORT   = ENV.fetch("SERVER_PORT", "25565").to_i
 SPECTATE_HOST = ENV.fetch "SPECTATE_HOST", "0.0.0.0"
 SPECTATE_PORT = ENV.fetch("SPECTATE_PORT", "25566").to_i
 
@@ -16,7 +17,7 @@ retry_delay = INITIAL_RETRY_DELAY
 
 loop do
   begin
-    client = Rosegold::Client.new SERVER_HOST
+    client = Rosegold::Client.new(SERVER_HOST, SERVER_PORT)
     spectate_server.attach_client client
     bot = Rosegold::Bot.new(client)
 
