@@ -1,5 +1,5 @@
 require "rosegold"
-
+Rosegold::Client.protocol_version = 774_u32 # 1.21.11
 # Stays connected and eats when hungry
 
 SERVER_HOST   = ENV.fetch "SERVER_HOST", "play.civmc.net"
