@@ -5,11 +5,15 @@ shards:
     git: https://github.com/luckyframework/habitat.git
     version: 0.4.9
 
+  minecraft-data:
+    git: https://github.com/rosegoldmc/minecraft-data.cr.git
+    version: 0.1.0+git.commit.2868c18b437747ef65c6337f3b7fb563c82f8617
+
   openssl_ext:
     git: https://github.com/spider-gazelle/openssl_ext.git
     version: 2.8.5
 
   rosegold: # Overridden
     git: https://github.com/rosegoldmc/rosegold.cr.git
-    version: 0.7.0+git.commit.919632e1a4da6d9ee025349fffdf423177b87501
+    version: 0.9.0+git.commit.c2fbe60165ee598085cbe57baca9bad43384426d
 
