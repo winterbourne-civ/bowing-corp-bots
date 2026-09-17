@@ -1,5 +1,5 @@
 # Beetroot Script
-This script was made specifically for the beetroot farm located in Winterbourne. The script takes approximately 3 hours and 20 minutes to complete, but is fully automatic and can be left in the background (it is also very light on resources, consuming only around 13mb or RAM so you can do something else in the meantime)
+This script was made specifically for the beetroot farm located in Winterbourne. The script takes approximately 3 hours and 20 minutes to complete, but is fully automatic and can be left in the background (it is also very light on resources, consuming only around 13mb of RAM so you can do something else in the meantime)
 
 ## Pre-requisites
 - Have namelayer access to the farm
