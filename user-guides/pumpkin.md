@@ -12,4 +12,5 @@ This script was made specifically for the pumpkin farm located in Winterbourne. 
 - Enter the farm and step on -1471, -7308
 - Turn on the script, either by going into bin > pumpkin.exe or, if you're on linux, running ./bin/pumpkin.
 - If this is your first time running a rosegold script, it'll ask you to sign in with your Microsoft account. I do not store your Microsoft credentials, but feel free to check the code in the repo if you wish.
+- The bot will disconnect you from civ and log in via console. You can spectate what the bot is doing if you connect to localhost:25566
 - Once done, collect the compacted pumpkin from the compactor.
