@@ -11,4 +11,5 @@ This script was made specifically for the beetroot farm located in Winterbourne.
 - Enter the farm and step on -1335, -7226
 - Turn on the script, either by going into bin > beetroot.exe or, if you're on linux, running ./bin/beetroot.
 - If this is your first time running a rosegold script, it'll ask you to sign in with your Microsoft account. I do not store your Microsoft credentials, but feel free to check the code in the repo if you wish.
+- The bot will disconnect you from civ and log in via console. You can spectate what the bot is doing if you connect to localhost:25566 on Minecraft
 - Once done, collect the compacted beetroot from the compactor
