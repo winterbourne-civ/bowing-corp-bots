@@ -30,6 +30,9 @@ LINES_PER_COMPACT = 5
 HARVEST_HOTBAR_SLOT =  1_u8 # 1-indexed: slot 0 in the original
 STICK_HOTBAR_SLOT   =  9_u8 # 1-indexed: slot 8 in the original
 
+QUEUE_CHECK_COMMAND     = "/spawn"
+UNKNOWN_COMMAND_MESSAGE = "Unknown or incomplete command"
+
 class BeetrootFarmer
   getter bot : Rosegold::Bot
 
@@ -43,6 +46,8 @@ class BeetrootFarmer
   end
 
   def start
+    wait_until_in_main
+
     cur_x = bot.x.floor.to_i
     cur_z = bot.z.floor.to_i
     unless (X_WEST..X_EAST).includes?(cur_x) && (Z_NORTH..Z_SOUTH).includes?(cur_z)
@@ -53,6 +58,38 @@ class BeetrootFarmer
     bot.hotbar_selection = HARVEST_HOTBAR_SLOT
     farm_main
     finish
+  end
+
+  private def wait_until_in_main(check_interval : Time::Span = 1.minutes, response_timeout : Time::Span = 5.seconds)
+    until in_main_server?(response_timeout)
+        sleep check_interval
+    end
+    Log.info { "Logged into main" }
+    bot.wait_ticks 20
+  end
+
+  private def in_main_server?(response_timeout : Time::Span) : Bool
+      got_unknown_command = false
+
+      handler_id = bot.on Rosegold::Clientbound::SystemChatMessage do |event|
+          msg = event.message.to_s.gsub(/§[0-9a-fk-or]/, "").strip
+          got_unknown_command = true if msg.includes?(UNKNOWN_COMMAND_MESSAGE)
+      end
+
+      bot.chat QUEUE_CHECK_COMMAND
+
+      timeout_time = Time.utc + response_timeout
+      while !got_unknown_command && Time.utc < timeout_time
+          sleep 0.1.seconds
+      end
+
+      bot.off Rosegold::Clientbound::SystemChatMessage, handler_id
+      got_unknown_command
+  end
+
+  private def pick_stick
+    found = bot.inventory.pick("stick")
+    raise "No sticks left in inventory to light the furnace" unless found
   end
 
   private def farm_main
@@ -150,7 +187,7 @@ class BeetrootFarmer
 
     furnace_target = Rosegold::Vec3d.new(COMPACTOR_FURNACE_X + 0.5, bot.y + 2.5, COMPACTOR_FURNACE_Z + 0.5)
     bot.look_at furnace_target
-    bot.hotbar_selection = STICK_HOTBAR_SLOT
+    pick_stick
     bot.wait_ticks 7
     bot.attack
     bot.wait_ticks 7

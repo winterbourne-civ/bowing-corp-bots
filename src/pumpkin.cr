@@ -29,6 +29,9 @@ HARVEST_TOOLS     = ["diamond_axe"]
 
 ROW_STEP = 4
 
+QUEUE_CHECK_COMMAND     = "/spawn"
+UNKNOWN_COMMAND_MESSAGE = "Unknown or incomplete command"
+
 class PumpkinFarmer
     getter bot : Rosegold::Bot
  
@@ -44,10 +47,12 @@ class PumpkinFarmer
     end
  
     def start
+        wait_until_in_main
+
         cur_x = bot.x.floor.to_i
         cur_z = bot.z.floor.to_i
         unless (X_WEST..X_EAST).includes?(cur_x) && (Z_NORTH..Z_SOUTH).includes?(cur_z)
-            Log.warn { "Not inside beetroot farm bounds (#{cur_x}, #{cur_z}); aborting" }
+            Log.warn { "Not inside pumpkin farm bounds (#{cur_x}, #{cur_z}); aborting" }
             return
         end
  
@@ -55,6 +60,34 @@ class PumpkinFarmer
         farm_main
         finish
     end
+
+    private def wait_until_in_main(check_interval : Time::Span = 1.minutes, response_timeout : Time::Span = 5.seconds)
+        until in_main_server?(response_timeout)
+            sleep check_interval
+        end
+        Log.info { "Logged into main" }
+        bot.wait_ticks 20
+    end
+
+    private def in_main_server?(response_timeout : Time::Span) : Bool
+        got_unknown_command = false
+ 
+        handler_id = bot.on Rosegold::Clientbound::SystemChatMessage do |event|
+            msg = event.message.to_s.gsub(/§[0-9a-fk-or]/, "").strip
+            got_unknown_command = true if msg.includes?(UNKNOWN_COMMAND_MESSAGE)
+        end
+ 
+        bot.chat QUEUE_CHECK_COMMAND
+ 
+        timeout_time = Time.utc + response_timeout
+        while !got_unknown_command && Time.utc < timeout_time
+            sleep 0.1.seconds
+        end
+ 
+        bot.off Rosegold::Clientbound::SystemChatMessage, handler_id
+        got_unknown_command
+    end
+
  
     private def pick_harvest_tool
         found = HARVEST_TOOLS.any? { |name| bot.inventory.pick(name) }

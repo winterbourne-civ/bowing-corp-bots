@@ -1,5 +1,5 @@
-name: rosegold-example
-version: 0.3.0
+name: bowing-corp-bots
+version: 0.5.0
 description: Template repository for creating Minecraft bots with Rosegold.cr
 
 authors:
