@@ -5,6 +5,7 @@ This script was made specifically for the beetroot farm located in Winterbourne.
 - Have namelayer access to the farm
 - Ensure that the compactor has at least 6 stacks of crates for a given run and that it is not in disrepair
 - Have nothing on your offhand
+- Put any item in your first hotbar lost (leftmost one) that isn't a consumable or that can be used by right clicking. Don't put a tool with fortune
 - Have a stick in your inventory
 
 ## Steps
